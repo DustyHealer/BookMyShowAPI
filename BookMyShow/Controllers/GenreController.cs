@@ -1,6 +1,7 @@
-﻿using BookMyShow.Models;
+﻿using BookMyShow.Exceptions;
+using BookMyShow.Models;
+using BookMyShow.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookMyShow.Controllers
 {
@@ -8,52 +9,91 @@ namespace BookMyShow.Controllers
     [ApiController]
     public class GenreController : ControllerBase
     {
-        private readonly BookMyShowContext _dbContext;
-        public GenreController(BookMyShowContext dbContext)
+        private readonly IGenreService _service;
+        public GenreController(IGenreService service)
         {
-            _dbContext = dbContext;
+            _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Genre>>> GetGenres()
+        [HttpGet("getAllGenres")]
+        public IActionResult GetGenres()
         {
-            if (_dbContext.Genres == null)
+            try
             {
-                return NotFound();
+                return Ok(_service.GetAllGenres());
             }
-            return await _dbContext.Genres.ToListAsync();
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Genre>> GetGenreById(int id)
+        [HttpGet("getGenreById/{id:int}")]
+        public IActionResult GetGenreById(int id)
         {
-            if (_dbContext.Genres == null)
+            try
             {
-                return NotFound();
+                return Ok(_service.GetGenreById(id));
             }
-
-            var genre = await _dbContext.Genres.FindAsync(id);
-            if (genre == null)
+            catch (GenreNotFoundException e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
-            return genre;
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        [HttpGet("{name}")]
-        public async Task<ActionResult<Genre>> GetGenreByName(string name)
+        [HttpGet("getGenreByName/{name}")]
+        public IActionResult GetGenreByName(string name)
         {
-            if (_dbContext.Genres == null)
+            try
             {
-                return NotFound();
+                return Ok(_service.GetGenreByName(name));
             }
+            catch (GenreNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
-            var genre = await _dbContext.Genres.FindAsync(name);
-            if (genre == null)
+        [HttpPost("AddGenre")]
+        public IActionResult AddGenre(Genre genre)
+        {
+            try
             {
-                return NotFound();
+                return Ok(_service.AddGenre(genre));
             }
-            return genre;
+            catch (GenreAlreadyExistsException e)
+            {
+                return Conflict(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("removeGenre/{id:int}")]
+        public IActionResult RemoveGenre(int id, Genre genre)
+        {
+            try
+            {
+                return Ok(_service.RemoveGenre(id, genre));
+            }
+            catch (GenreNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
