@@ -1,6 +1,7 @@
-﻿using BookMyShow.Models;
+﻿using BookMyShow.Exceptions;
+using BookMyShow.Models;
+using BookMyShow.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookMyShow.Controllers
 {
@@ -8,94 +9,91 @@ namespace BookMyShow.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly BookMyShowContext _dbContext;
-        public MovieController(BookMyShowContext dbContext)
+        private readonly IMovieService _service;
+        public MovieController(IMovieService service)
         {
-            _dbContext = dbContext;
+            _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+        [HttpGet("getAllMovies")]
+        public IActionResult GetMovies()
         {
-            if (_dbContext.Movies == null)
-            {
-                return NotFound();
-            }
-            return await _dbContext.Movies.ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovieById(int id)
-        {
-            if (_dbContext.Movies == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _dbContext.Movies.FindAsync(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-            return movie;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
-        {
-            _dbContext.Movies.Add(movie);
-            await _dbContext.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetMovieById), new { id = movie.ID }, movie);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> PutMovie(int id, Movie movie)
-        {
-            if (id != movie.ID)
-            {
-                return BadRequest();
-            }
-            _dbContext.Entry(movie).State = EntityState.Modified;
             try
             {
-                await _dbContext.SaveChangesAsync();
+                return Ok(_service.GetAllMovies());
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                if (!IsMovieAvailable(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(e.Message);
             }
-            return Ok();
         }
 
-        private bool IsMovieAvailable(int id)
+        [HttpGet("getMovieById/{id:int}")]
+        public IActionResult GetMovieById(int id)
         {
-            return (_dbContext.Movies?.Any(x => x.ID == id)).GetValueOrDefault();
+            try
+            {
+                return Ok(_service.GetMovieById(id));
+            }
+            catch (MovieNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteMovie(int id)
+        [HttpGet("getMovieByTitle/{title}")]
+        public IActionResult GetMovieByTitle(string title)
         {
-            if (_dbContext.Movies == null)
+            try
             {
-                return NotFound();
+                return Ok(_service.GetMovieByTitle(title));
             }
-            var movie = await _dbContext.Movies.FindAsync(id);
-            if (movie == null)
+            catch (MovieNotFoundException e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
-            _dbContext.Movies.Remove(movie);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
+        [HttpPost("AddMovie")]
+        public IActionResult AddMovie(Movie movie)
+        {
+            try
+            {
+                return Ok(_service.AddMovie(movie));
+            }
+            catch (MovieAlreadyExistsException e)
+            {
+                return Conflict(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("removeMovie/{id:int}")]
+        public IActionResult RemoveMovie(int id, Movie movie)
+        {
+            try
+            {
+                return Ok(_service.RemoveMovie(id, movie));
+            }
+            catch (MovieNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

@@ -63,7 +63,7 @@ namespace BookMyShow.Controllers
         }
 
         [HttpPost("AddActor")]
-        public IActionResult Addbooking(Actor actor)
+        public IActionResult AddActor(Actor actor)
         {
             try
             {
