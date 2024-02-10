@@ -5,13 +5,13 @@
 namespace BookMyShow.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Actor",
+                name: "Actors",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -20,11 +20,11 @@ namespace BookMyShow.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actor", x => x.ID);
+                    table.PrimaryKey("PK_Actors", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Director",
+                name: "Directors",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -33,11 +33,11 @@ namespace BookMyShow.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Director", x => x.ID);
+                    table.PrimaryKey("PK_Directors", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genre",
+                name: "Genres",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -46,7 +46,7 @@ namespace BookMyShow.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genre", x => x.ID);
+                    table.PrimaryKey("PK_Genres", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,15 +63,15 @@ namespace BookMyShow.Migrations
                 {
                     table.PrimaryKey("PK_Movies", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Movies_Director_DirectorId",
+                        name: "FK_Movies_Directors_DirectorId",
                         column: x => x.DirectorId,
-                        principalTable: "Director",
+                        principalTable: "Directors",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Movies_Genre_GenreID",
+                        name: "FK_Movies_Genres_GenreID",
                         column: x => x.GenreID,
-                        principalTable: "Genre",
+                        principalTable: "Genres",
                         principalColumn: "ID");
                 });
 
@@ -86,9 +86,9 @@ namespace BookMyShow.Migrations
                 {
                     table.PrimaryKey("PK_ActorMovie", x => new { x.ActorsID, x.MoviesID });
                     table.ForeignKey(
-                        name: "FK_ActorMovie_Actor_ActorsID",
+                        name: "FK_ActorMovie_Actors_ActorsID",
                         column: x => x.ActorsID,
-                        principalTable: "Actor",
+                        principalTable: "Actors",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -100,7 +100,7 @@ namespace BookMyShow.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Review",
+                name: "Reviews",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -111,9 +111,9 @@ namespace BookMyShow.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Review", x => x.ID);
+                    table.PrimaryKey("PK_Reviews", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Review_Movies_MovieId",
+                        name: "FK_Reviews_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "ID",
@@ -136,8 +136,8 @@ namespace BookMyShow.Migrations
                 column: "GenreID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Review_MovieId",
-                table: "Review",
+                name: "IX_Reviews_MovieId",
+                table: "Reviews",
                 column: "MovieId");
         }
 
@@ -148,19 +148,19 @@ namespace BookMyShow.Migrations
                 name: "ActorMovie");
 
             migrationBuilder.DropTable(
-                name: "Review");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Actor");
+                name: "Actors");
 
             migrationBuilder.DropTable(
                 name: "Movies");
 
             migrationBuilder.DropTable(
-                name: "Director");
+                name: "Directors");
 
             migrationBuilder.DropTable(
-                name: "Genre");
+                name: "Genres");
         }
     }
 }

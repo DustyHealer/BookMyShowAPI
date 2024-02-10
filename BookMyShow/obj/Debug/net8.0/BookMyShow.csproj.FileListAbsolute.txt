@@ -143,3 +143,4 @@ C:\Users\amazi\OneDrive\Desktop\Tech Interviews\Crew Scale\Assignment\BookMyShow
 C:\Users\amazi\OneDrive\Desktop\Tech Interviews\Crew Scale\Assignment\BookMyShow\BookMyShow\BookMyShow\bin\Debug\net8.0\Serilog.Sinks.Console.dll
 C:\Users\amazi\OneDrive\Desktop\Tech Interviews\Crew Scale\Assignment\BookMyShow\BookMyShow\BookMyShow\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
 C:\Users\amazi\OneDrive\Desktop\Tech Interviews\Crew Scale\Assignment\BookMyShow\BookMyShow\BookMyShow\bin\Debug\net8.0\Serilog.Sinks.File.dll
+C:\Users\amazi\OneDrive\Desktop\Tech Interviews\Crew Scale\Assignment\BookMyShow\BookMyShow\BookMyShow\obj\Debug\net8.0\BookMyShow.sourcelink.json

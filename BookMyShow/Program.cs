@@ -10,19 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Register the Db context classes
-builder.Services.AddDbContext<ActorContext>(options => 
-options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyShowCS"))
-);
-builder.Services.AddDbContext<DirectorContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyShowCS"))
-);
-builder.Services.AddDbContext<GenreContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyShowCS"))
-);
-builder.Services.AddDbContext<MovieContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyShowCS"))
-);
-builder.Services.AddDbContext<ReviewContext>(options =>
+builder.Services.AddDbContext<BookMyShowContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("BookMyShowCS"))
 );
 

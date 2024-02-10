@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookMyShow.Migrations
 {
-    [DbContext(typeof(MovieContext))]
-    partial class MovieContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(BookMyShowContext))]
+    partial class BookMyShowContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,7 @@ namespace BookMyShow.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Actor");
+                    b.ToTable("Actors");
                 });
 
             modelBuilder.Entity("BookMyShow.Models.Director", b =>
@@ -68,7 +68,7 @@ namespace BookMyShow.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Director");
+                    b.ToTable("Directors");
                 });
 
             modelBuilder.Entity("BookMyShow.Models.Genre", b =>
@@ -85,7 +85,7 @@ namespace BookMyShow.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("BookMyShow.Models.Movie", b =>
@@ -137,7 +137,7 @@ namespace BookMyShow.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("ActorMovie", b =>

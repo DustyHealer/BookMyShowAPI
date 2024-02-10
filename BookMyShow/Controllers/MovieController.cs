@@ -8,8 +8,8 @@ namespace BookMyShow.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly MovieContext _dbContext;
-        public MovieController(MovieContext dbContext)
+        private readonly BookMyShowContext _dbContext;
+        public MovieController(BookMyShowContext dbContext)
         {
             _dbContext = dbContext;
         }

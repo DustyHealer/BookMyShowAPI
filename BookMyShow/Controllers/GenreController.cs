@@ -8,8 +8,8 @@ namespace BookMyShow.Controllers
     [ApiController]
     public class GenreController : ControllerBase
     {
-        private readonly GenreContext _dbContext;
-        public GenreController(GenreContext dbContext)
+        private readonly BookMyShowContext _dbContext;
+        public GenreController(BookMyShowContext dbContext)
         {
             _dbContext = dbContext;
         }

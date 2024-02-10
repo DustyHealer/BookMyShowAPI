@@ -4,8 +4,8 @@ namespace BookMyShow.Repository
 {
     public class ActorRepository : IActorRepository
     {
-        private readonly ActorContext _dbContext;
-        public ActorRepository(ActorContext dbContext)
+        private readonly BookMyShowContext _dbContext;
+        public ActorRepository(BookMyShowContext dbContext)
         {
             _dbContext = dbContext;
         }
