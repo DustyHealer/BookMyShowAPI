@@ -6,6 +6,3 @@ bin/
 
 # ignore ALL files in ANY directory named .vs
 .vs/
-
-# ignore ALL .csproj files
-*.csproj
